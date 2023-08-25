@@ -1,0 +1,29 @@
+{
+  "emp": [
+    {
+      "id": 1,
+      "email": "disha@gmail.com",
+      "password": "disha123"
+    },
+    {
+      "id": 2,
+      "email": "disha@gmail.com",
+      "password": "disha123"
+    },
+    {
+      "id": 3,
+      "email": "disha@gmail.com",
+      "password": "disha123"
+    },
+    {
+      "email": "gautambafna26@gmail.com",
+      "password": "hrthr",
+      "id": 4
+    },
+    {
+      "email": "prawjwal72556@gmail.com",
+      "password": "12",
+      "id": 5
+    }
+  ]
+}
