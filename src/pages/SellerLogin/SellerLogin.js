@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import "./login.css";
+import styles from "./SellerLogin.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../services/api";
-// import { setUserLoginCookie } from "../../components/Cookies/Cookies";
-//import axios from "axios";
+import { sellerLogin } from "../../services/api";
+// import { setSellerLoginCookie } from "../../components/Cookies/Cookies";
 
-export const Login = (props) => {
-  const { setisLoggedin } = props;
+export const SellerLogin = (props) => {
+  const { setSellerIsLoggedin } = props;
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
@@ -14,24 +13,23 @@ export const Login = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(email);
-    // console.log(pass);
-    //axios.post("http://localhost:3030/emp",{'email' : email , 'password' : pass})
-    const login_response = await login(email, pass);
-    console.log(login_response);
+    const login_response = await sellerLogin(email, pass);
+
     if (login_response.msg === "Login sucessful") {
-      // setUserLoginCookie();
-      setisLoggedin(true);
-      nav("/");
+      console.log(login_response);
+      // Set a cookie when the seller logs in
+      // setSellerLoginCookie();
+      setSellerIsLoggedin(true);
+      nav("/seller/Home");
     } else {
       alert("Unable to login: " + login_response.msg);
     }
   };
 
   return (
-    <div className="auth-form-container">
+    <div className={styles["auth-form-container"]}>
       <h2>Login</h2>
-      <form className="login-form" onSubmit={handleSubmit}>
+      <form className={styles["login-form"]} onSubmit={handleSubmit}>
         <label htmlFor="email">email</label>
         <input
           value={email}

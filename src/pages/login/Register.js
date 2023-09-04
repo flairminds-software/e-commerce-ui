@@ -6,10 +6,11 @@ import { Link, useNavigate} from "react-router-dom";
 import { register } from '../../services/api';
 
 export const Register = (props) => {
-    const {setisLoggedin} = props;
+    // const {setisLoggedin} = props;
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const nav = useNavigate()
 
@@ -17,7 +18,7 @@ export const Register = (props) => {
         e.preventDefault();
         console.log(email);
 
-        const register_response = await register(email, pass,name,phoneNumber);
+        const register_response = await register(email, pass,name,phoneNumber, address);
         if(register_response.msg==="Register sucessful"){
             //setisLoggedin(true)
             nav("/login")
@@ -33,6 +34,9 @@ export const Register = (props) => {
             <form className="register-form" onSubmit={handleSubmit}>
                 <label htmlFor="name">Full name</label>
                 <input value={name} name="name" onChange={(e) => setName(e.target.value)} id="name" placeholder="Full Name" />
+
+                <label htmlFor="address">Address</label>
+                <input value={address} onChange={(e) => setAddress(e.target.value)} type="address" placeholder="address" id="address" name="address" />
 
                 <label htmlFor="email">Email</label>
                 <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
