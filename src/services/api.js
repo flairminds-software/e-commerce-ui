@@ -1,6 +1,8 @@
 import axios from "axios";
 const BASE_URL = "http://localhost:5000";
 
+axios.defaults.withCredentials = true;
+
 export const getProducts = async () => {
   const allProducts = await axios.get(BASE_URL + "/api/products");
   return allProducts;
@@ -34,7 +36,9 @@ export const sellerLogin = async (email, pass) => {
   const response = await axios.post(BASE_URL + "/api/sellerLogin", {
     email: email,
     password: pass,
-  });
+});
+
+  console.log(response);
   return response.data;
 };
 
@@ -62,7 +66,7 @@ export const sellerAddProduct = async (productName, brandName, description, avai
 };
 
 export const  getSellerData = async () => {
-  const allProducts = await axios.get(BASE_URL + "/api/viewSellerProduct",{withCredentials: true});
+  const allProducts = await axios.get(BASE_URL + "/api/viewSellerProduct");
   return allProducts;
 };
 export default BASE_URL;
