@@ -25,8 +25,6 @@ const Shop = (props) => {
       <div className="shopTitle">
         <h2>GenZ Shop</h2>
       </div>
-
-      {/* { console.log(products,"pro") */}
       <div className="products">
         {products.map(
           (

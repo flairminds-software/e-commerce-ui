@@ -1,45 +1,67 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../../context/shop-context";
-import { PRODUCTS } from "../../products";
 import { CartItem } from "./cart-item";
 import { useNavigate } from "react-router-dom";
+import { viewCart } from "../../services/api"
 
 import "./cart.css";
 export const Cart = (props) => {
-  const { cartItems, getTotalCartAmount, checkout } = useContext(ShopContext);
+  const { getTotalCartAmount, checkout } = useContext(ShopContext);
   const totalAmount = getTotalCartAmount();
-  console.log(cartItems);
   const navigate = useNavigate();
+  const [cartData,setCartData]= useState([])
+
+  useEffect(() => {
+    // Fetch cart data from the API when the component mounts
+    async function fetchCartData() {
+      try {
+        const response = await viewCart();
+        setCartData(response.data); // Update cartData with the API response
+        console.log(response.data)
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+      }
+    }
+
+    fetchCartData();
+  }, [setCartData]);
+
+  const removeFromCart = (itemId) => {
+    const updatedCartData = cartData.filter((item) => item.id !== itemId);
+    setCartData(updatedCartData);
+  };
+
+  // Check if cartData is an array before mapping over it
+  if (!Array.isArray(cartData)) {
+    return <h1>Your Shopping Cart is Empty</h1>;
+  }
 
   return (
-    <div className="cart">
+    <div className="cartparent">
       <div>
         <h1>Your Cart Items</h1>
       </div>
       <div className="cart">
-        {PRODUCTS.map((product) => {
-          if (cartItems[product.id] !== 0) {
-            return <CartItem data={product} />;
-          }
-        })}
+        {cartData.map((item) => (
+          <CartItem data={item} key={item.id} removeFromCart={removeFromCart}/>
+        ))}
       </div>
 
       {totalAmount > 0 ? (
         <div className="checkout">
-          <p> Subtotal: ${totalAmount} </p>
-          <button onClick={() => navigate("/")}> Continue Shopping </button>
+          <p>Subtotal: ${totalAmount}</p>
+          <button onClick={() => navigate("/")}>Continue Shopping</button>
           <button
             onClick={() => {
               checkout();
               navigate("/checkout");
             }}
           >
-            {" "}
-            Checkout{" "}
+            Checkout
           </button>
         </div>
       ) : (
-        <h1> Your Shopping Cart is Empty</h1>
+        <h1>Your Shopping Cart is Empty</h1>
       )}
     </div>
   );

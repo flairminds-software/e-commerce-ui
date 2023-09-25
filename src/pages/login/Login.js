@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/api";
-// import { setUserLoginCookie } from "../../components/Cookies/Cookies";
-//import axios from "axios";
 
 export const Login = (props) => {
   const { setisLoggedin } = props;
@@ -14,9 +12,6 @@ export const Login = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(email);
-    // console.log(pass);
-    //axios.post("http://localhost:3030/emp",{'email' : email , 'password' : pass})
     const login_response = await login(email, pass);
     console.log(login_response);
     if (login_response.msg === "Login sucessful") {

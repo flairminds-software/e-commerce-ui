@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { getSellerData } from "../../services/api"; // You might need to create this function to fetch seller data
-import Product from "../shop/product";
+import { getSellerData } from "../../services/api";
+import SellerProductList from "../../components/Products/SellerProductList";
 
-const SellerHome = ({ sellerIsLoggedIn }) => {
-  const [sellerData, setSellerData] = useState({});                                                                      
-  const [products, setproducts] = useState([]);
+const SellerHome = () => {
+  const [sellerData, setSellerData] = useState([]);
 
   useEffect(() => {
-    // Fetch seller data here using an appropriate API call
     async function fetchSellerData() {
       try {
-        const response = await getSellerData(); // Replace this with the actual API call
-        setSellerData(response.data); // Assuming response.data contains the fetched data
+        const response = await getSellerData();
+        console.log(response.data);
+        setSellerData(response.data);
       } catch (error) {
         console.error("Error fetching seller data:", error);
       }
@@ -22,22 +20,10 @@ const SellerHome = ({ sellerIsLoggedIn }) => {
   }, []);
 
   return (
-    <div>
-      <h2>Welcome to the Seller Home Page</h2>
-      {/* Display seller data here */}
-      <p>Seller Name: {sellerData.name}</p>
-      <p>Email: {sellerData.email}</p>
-      {/* Add more data fields as needed */}
-      <div className="products">
-      {products.map(
-          (
-            product //explain 22:45
-          ) => (
-            <Product data={product} />
-          )
-        )}
+    <div style={{width:"96%", height:"100%", overflow:"auto"}}>
+      <div>
+        <SellerProductList products={sellerData}/>
       </div>
-      <Link to="/seller/Upload">Upload</Link>
     </div>
   );
 };

@@ -1,26 +1,42 @@
-import { createContext, useState } from "react";
-
-import {PRODUCTS}  from "../products";
+import { createContext, useState, useEffect } from "react";
+import { getProducts } from "../services/api";
 
 export const ShopContext = createContext(null);
 
-const getDefaultCart = () => {
+const getDefaultCart = (products) => {
   let cart = {};
-  for (let i = 1; i < PRODUCTS.length + 1; i++) {       //33.20
-    cart[i] = 0;
+  for (const product of products) {
+    cart[product.id] = 0;
   }
   return cart;
 };
 
 export const ShopContextProvider = (props) => {
-  const [cartItems, setCartItems] = useState(getDefaultCart());
+  const [cartItems, setCartItems] = useState({});
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Fetch product data from your API using the getProducts function
+    getProducts()
+      .then((response) => {
+        setProducts(response.data);
+        setCartItems(getDefaultCart(response.data));
+      })
+      .catch((error) => {
+        console.error("Error fetching product data:", error);
+      });
+  }, []);
+
+  // Define your cart-related functions here (addToCart, removeFromCart, updateCartItemCount, checkout)
 
   const getTotalCartAmount = () => {
     let totalAmount = 0;
-    for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        let itemInfo = PRODUCTS.find((product) => product.id === Number(item));
-        totalAmount += cartItems[item] * itemInfo.price;
+    for (const itemId in cartItems) {
+      if (cartItems[itemId] > 0) {
+        const itemInfo = products.find((product) => product.id === Number(itemId));
+        if (itemInfo) {
+          totalAmount += cartItems[itemId] * itemInfo.price;
+        }
       }
     }
     return totalAmount;
@@ -39,11 +55,12 @@ export const ShopContextProvider = (props) => {
   };
 
   const checkout = () => {
-    setCartItems(getDefaultCart());
+    setCartItems(getDefaultCart(products));
   };
 
   const contextValue = {
     cartItems,
+    products,
     addToCart,
     updateCartItemCount,
     removeFromCart,

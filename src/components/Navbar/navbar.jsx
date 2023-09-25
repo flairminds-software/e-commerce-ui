@@ -1,10 +1,28 @@
 import "./navbar.css";
-import { Link } from "react-router-dom";
 import { ShoppingCart } from "phosphor-react";
-
+import { Link, useNavigate} from "react-router-dom";
 import React from "react";
+import { logout } from "../../services/api";
 
-const Navbar = ({ isLoggedin, sellerIsLoggedin }) => {
+const Navbar = ({ isLoggedin, sellerIsLoggedin, setisLoggedin, setSellerIsLoggedin }) => {
+  const nav = useNavigate()
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      const logoutResponse = await logout(); // Call the logout API
+      if (logoutResponse === "Logout Successful") {
+        nav("/");
+        setSellerIsLoggedin(false);
+        setisLoggedin(false);
+      } else {
+        alert("Unable to logout: " + logoutResponse);
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+      alert("Unable to logout. Please try again later.");
+    }
+  };
+
   return (
     <div className="navbar">
       <div className="links">
@@ -23,6 +41,7 @@ const Navbar = ({ isLoggedin, sellerIsLoggedin }) => {
                 cursor: "pointer",
                 borderRadius: "5px",
               }}
+              onClick={handleLogout}
             >
               Log Out
             </button>

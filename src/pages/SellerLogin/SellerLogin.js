@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./SellerLogin.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { sellerLogin } from "../../services/api";
-// import { setSellerLoginCookie } from "../../components/Cookies/Cookies";
 
 export const SellerLogin = (props) => {
   const { setSellerIsLoggedin } = props;
@@ -28,7 +27,7 @@ export const SellerLogin = (props) => {
 
   return (
     <div className={styles["auth-form-container"]}>
-      <h2>Login</h2>
+      <h2>Login Seller</h2>
       <form className={styles["login-form"]} onSubmit={handleSubmit}>
         <label htmlFor="email">email</label>
         <input
